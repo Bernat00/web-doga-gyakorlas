@@ -49,44 +49,42 @@ class Form extends Container{
         this.#form = document.createElement('form');
         this.Div.appendChild(this.#form);
 
-        this.#nevField = document.createElement('input');
-        this.#szamjegyekField = document.createElement('input');
-        this.#szazadField = document.createElement('input');
+        const nev = this.createField('Név', 'nev');
+        const szamjegyek = this.createField('Számjegyek', 'szamjegyek');
+        const szazad = this.createField('Század', 'szazad');
 
-        const label1 = document.createElement('label');
-        const label2 = document.createElement('label');
-        const label3 = document.createElement('label');
+        this.#nevField = nev.input;
+        this.#szamjegyekField = szamjegyek.input;
+        this.#szazadField = szazad.input;
 
-        this.#nevField.type = 'text';
-        this.#nevField.id = label1.for = 'nev';
-        this.#szamjegyekField.type = 'text';
-        this.#szamjegyekField.id = label2.for = 'szamjegyek';
-        this.#szazadField.type = 'text';
-        this.#szazadField.id = label3.for = 'szazad';
-
-        label1.textContent = 'Név:';
-        label2.textContent = 'Számjegyek száma:';
-        label3.textContent = 'Század';
-
-        this.#form.appendChild(label1);
-        this.#form.appendChild(document.createElement('br'));
-        this.#form.appendChild(this.#nevField);
-        this.#form.appendChild(document.createElement('br'));
-        this.#form.appendChild(label2);
-        this.#form.appendChild(document.createElement('br'));
-        this.#form.appendChild(this.#szamjegyekField);
-        this.#form.appendChild(document.createElement('br'));
-        this.#form.appendChild(label3);
-        this.#form.appendChild(document.createElement('br'));
-        this.#form.appendChild(this.#szazadField);
+        this.#form.appendChild(nev.fullDiv);
+        this.#form.appendChild(szamjegyek.fullDiv);
+        this.#form.appendChild(szazad.fullDiv);
     }
 
     /**
      * 
      * @param {String} name 
      * @param {String} id 
+     * 
+     * 
+     * @returns {{'fullDiv': HTMLDivElement, 'input': HTMLInputElement}} objet that has the div and the input
      */
     createField(name, id){
-        // valamert megrtam 8000 code duplikacioval
+        const field = document.createElement('div');
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+
+        input.id = label.for = id;
+        label.textContent = name;
+        input.type = 'text';
+
+
+        field.appendChild(label);
+        field.appendChild(document.createElement('br'));
+        field.appendChild(input);
+        field.appendChild(document.createElement('br'));
+
+        return {fullDiv: field, input:input};
     }
 }
