@@ -38,4 +38,15 @@ class PeopleManager{
         this.#people.push(peson);
         this.#updateCallBack(this.#people);
     }
+
+    createStringFromData(){
+        let strings = [];
+
+
+        for(const person of this.#people){
+            strings.push(person.nev + ';' + person.szamjegyekSzama + ';' + person.szazad)
+        }
+
+        return strings.join('\n');
+    }
 }

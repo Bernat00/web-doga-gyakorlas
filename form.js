@@ -68,10 +68,11 @@ class Form extends Container{
      * @param {String} id 
      * 
      * 
-     * @returns {{'fullDiv': HTMLDivElement, 'input': HTMLInputElement}} objet that has the div and the input
+     * @returns {{fullDiv: HTMLDivElement, input: HTMLInputElement}} objet that has the div and the input
      */
     createField(name, id){
         const field = document.createElement('div');
+        const error = document.createElement('p');
         const label = document.createElement('label');
         const input = document.createElement('input');
 
@@ -86,5 +87,9 @@ class Form extends Container{
         field.appendChild(document.createElement('br'));
 
         return {fullDiv: field, input:input};
+    }
+
+    validate(){
+
     }
 }
