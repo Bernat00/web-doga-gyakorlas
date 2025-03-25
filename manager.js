@@ -16,6 +16,7 @@ class PeopleManager{
 
 
     constructor(){
+        this.#people = [];
         this.#updateCallBack = () =>{
             console.log('updateCallback not set');
         };
@@ -35,6 +36,6 @@ class PeopleManager{
      */
     addPerson(peson){
         this.#people.push(peson);
-        this.#updateCallBack();
+        this.#updateCallBack(this.#people);
     }
 }

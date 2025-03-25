@@ -15,11 +15,12 @@ class Form extends Container{
         this.#manager = manager;
         this.createForm();
         this.Div.appendChild(this.#form);
+        this.#form.method = 'post';
 
         const submit = document.createElement('button');
         submit.type = 'submit';
         submit.textContent = 'Hozzáadás';
-        submit.onclick = this.submitFunc;
+        submit.onclick = (e) => this.submitFunc(e);
         this.#form.appendChild(submit);
     }
 
@@ -33,13 +34,15 @@ class Form extends Container{
         /**
          * @type {Person}
          */
-        const person = {};
+        let person = {};
 
         person.nev = this.#nevField.value;
         person.szamjegyekSzama = this.#szamjegyekField.value;
         person.szazad = this.#szazadField.value;
 
         this.#manager.addPerson(person);
+
+        this.#form.reset();
     }
 
     createForm(){

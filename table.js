@@ -16,10 +16,10 @@ class Table extends Container{
         this.#tbody = document.createElement('tbody');
         
         table.appendChild(this.createHeader());
-        table.appendChild(this.#tbody);
+        table.appendChild(this.#tbody); 
         container.Div.appendChild(table);
 
-        manager.UpdateCallback = this.renderTable;
+        manager.UpdateCallback = (people) => this.renderTable(people);    //hulye this 
     }
 
     /**
@@ -31,7 +31,6 @@ class Table extends Container{
 
         for (const person of people) {
             const row = this.createRow(person);
-            this.#tbody.appendChild(row);
         }
     }
     
