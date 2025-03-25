@@ -1,5 +1,5 @@
 /**
- * @callback UpdateCallback
+ * @callback OnUpdate
  * @param {Person[]} people
  */
 
@@ -10,23 +10,23 @@ class PeopleManager{
     #people;
 
     /**
-     * @type {UpdateCallback}
+     * @type {OnUpdate}
      */
-    #updateCallBack;
+    #onUpdate;
 
 
     constructor(){
         this.#people = [];
-        this.#updateCallBack = () =>{
-            console.log('updateCallback not set');
+        this.#onUpdate = () =>{
+            console.log('OnUpdate not set');
         };
     };
 
     /**
-     * @param {UpdateCallback} callback
+     * @param {OnUpdate} callback
      */
-    set UpdateCallback(callback){
-        this.#updateCallBack = callback;
+    set OnUpdate(callback){
+        this.#onUpdate = callback;
     }
 
 
@@ -36,8 +36,9 @@ class PeopleManager{
      */
     addPerson(peson){
         this.#people.push(peson);
-        this.#updateCallBack(this.#people);
+        this.#onUpdate(this.#people);
     }
+
 
     createStringFromData(){
         let strings = [];

@@ -17,9 +17,14 @@ class Table extends Container{
         
         table.appendChild(this.createHeader());
         table.appendChild(this.#tbody); 
-        container.Div.appendChild(table);
+        this.Div.appendChild(table);
 
-        manager.UpdateCallback = (people) => this.renderTable(people);    //hulye this 
+        manager.OnUpdate = (people) => this.renderTable(people); 
+        //hulye this 
+    }
+
+    OnUpdate(people){
+        this.renderTable(people);
     }
 
     /**

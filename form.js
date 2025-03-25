@@ -93,3 +93,46 @@ class Form extends Container{
 
     }
 }
+
+class FormField extends HTMLDivElement{
+    #label;
+    #input;
+    #error;
+
+
+    /**
+     * 
+     * @param {String} labelText 
+     * @param {String} inputId 
+     * @param {String} type 
+     * @param {?{text:String, value:String}[]} options 
+     */
+    constructor(labelText, inputId, type, options){
+        super();
+        
+        this.#label = document.createElement('label');
+        this.#label.textContent = labelText;
+        
+        if(type === 'select'){
+            this.#input = document.createElement('select');
+
+            for(const option of options){
+                const HTMLOption = document.createElement('option');
+                HTMLOption.textContent = option.text;
+                HTMLOption.value = option.value;
+
+                this.#input.appendChild(HTMLOption);
+            }
+        }
+        else{
+            this.#input = document.createElement('input');
+            this.#input.type = type;
+            this.#label.for = this.#input.id = inputId;
+        }
+    
+    }
+
+    get Input(){
+        return this.#input;
+    }
+}
