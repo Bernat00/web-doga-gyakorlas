@@ -1,102 +1,103 @@
+/**
+ * @callback OnSubmit
+ * @param {SubmitEvent} e event
+ */
+
 class Form extends Container{
+    /**
+     * @type {HTMLFormElement}
+     */
     #form;
-    #nevField;
-    #szamjegyekField;
-    #szazadField;
+
+    /**
+     * @type {PeopleManager}
+     */
     #manager;
 
     /**
-     * 
-     * @param {PeopleManager} manager 
+     * @type {FormField[]}
      */
-    constructor(manager){
+    #formFields;
+
+
+    constructor(){
         super();
 
-        this.#manager = manager;
-        this.createForm();
-        this.Div.appendChild(this.#form);
-        this.#form.method = 'post';
+        this.#formFields = [];
 
+        this.#form = document.createElement('form');        
+        
         const submit = document.createElement('button');
         submit.type = 'submit';
         submit.textContent = 'Hozzáadás';
-        submit.onclick = (e) => this.submitFunc(e);
+        
         this.#form.appendChild(submit);
+        this.Div.appendChild(this.#form);
+    }
+
+
+    /**
+     * @param {OnSubmit} callback 
+     */
+    set OnSubmit(callback){
+        this.#form.addEventListener('submit',callback);
     }
 
     /**
-     * 
-     * @param {SubmitEvent} e 
+     * @returns {FormField}
      */
-    submitFunc(e){
-        e.preventDefault();
+    get FormFields(){
+        return this.formFields;
+    }
 
-        /**
-         * @type {Person}
-         */
-        let person = {};
-
-        person.nev = this.#nevField.value;
-        person.szamjegyekSzama = this.#szamjegyekField.value;
-        person.szazad = this.#szazadField.value;
-
-        this.#manager.addPerson(person);
-
+    reset(){
         this.#form.reset();
     }
 
-    createForm(){
-        this.#form = document.createElement('form');
-        this.Div.appendChild(this.#form);
-
-        const nev = this.createField('Név', 'nev');
-        const szamjegyek = this.createField('Számjegyek', 'szamjegyek');
-        const szazad = this.createField('Század', 'szazad');
-
-        this.#nevField = nev.input;
-        this.#szamjegyekField = szamjegyek.input;
-        this.#szazadField = szazad.input;
-
-        this.#form.appendChild(nev.fullDiv);
-        this.#form.appendChild(szamjegyek.fullDiv);
-        this.#form.appendChild(szazad.fullDiv);
-    }
 
     /**
      * 
-     * @param {String} name 
-     * @param {String} id 
-     * 
-     * 
-     * @returns {{fullDiv: HTMLDivElement, input: HTMLInputElement}} objet that has the div and the input
+     * @param {FormField[]} formFields 
      */
-    createField(name, id){
-        const field = document.createElement('div');
-        const error = document.createElement('p');
-        const label = document.createElement('label');
-        const input = document.createElement('input');
-
-        input.id = label.for = id;
-        label.textContent = name;
-        input.type = 'text';
-
-
-        field.appendChild(label);
-        field.appendChild(document.createElement('br'));
-        field.appendChild(input);
-        field.appendChild(document.createElement('br'));
-
-        return {fullDiv: field, input:input};
+    addFormFields(formFields){
+        for(const formField of formFields){
+            this.#formFields.push(formField);
+        }
     }
 
-    validate(){
 
+    /**
+     * @returns {Boolean}
+     */
+    validate(){
+        let isValid = true;
+
+        for(const formField of this.#formFields){
+            if(!formField.Value){
+                formField.ErrorText = 'kötelezo mezo';
+                isValid = false;
+            }
+            else{
+                formField.ErrorText = '';
+            }
+        }
+
+        return isValid;
     }
 }
 
-class FormField extends HTMLDivElement{
+class FormField extends HTMLDivElement{ // velemenyem szerint az h ilyet nem lehet csinalni az kaka
+    // ha ezt be akarom fejezni akk kell csinalni egy div propertit es abba kell rakni a dolgokat
+    // mennyen a fenebe az aki ezt kitalalta 
+    // meg az a kerdesem h ha vannak classok akk miert egy rohadt oject a div amin van valami specko interface
+    // vagy ha nem igy van akk nem ertem
+    //áááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááá
     #label;
     #input;
+
+    /**
+     * @type {HTMLParagraphElement}
+     */
     #error;
 
 
@@ -109,9 +110,11 @@ class FormField extends HTMLDivElement{
      */
     constructor(labelText, inputId, type, options){
         super();
-        
+
         this.#label = document.createElement('label');
         this.#label.textContent = labelText;
+        this.#error = document.createElement('p');
+        this.#error.style.color = 'red';
         
         if(type === 'select'){
             this.#input = document.createElement('select');
@@ -129,10 +132,25 @@ class FormField extends HTMLDivElement{
             this.#input.type = type;
             this.#label.for = this.#input.id = inputId;
         }
-    
+
+
+        this.appendChild(this.#label);
+        this.appendChild(this.#input);
+        this.appendChild(this.#error);
     }
 
-    get Input(){
-        return this.#input;
+
+    /**
+     * @returns {String}
+     */
+    get Value(){
+        return this.#input.value;
+    }
+
+    /**
+     * @param {String} text 
+     */
+    set ErrorText(text){
+        this.#error.textContent = text
     }
 }
