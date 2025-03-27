@@ -9,6 +9,8 @@ class Form extends Container{
      */
     #form;
 
+    #button;
+
     /**
      * @type {PeopleManager}
      */
@@ -27,11 +29,11 @@ class Form extends Container{
 
         this.#form = document.createElement('form');        
         
-        const submit = document.createElement('button');
-        submit.type = 'submit';
-        submit.textContent = 'Hozzáadás';
+        this.#button = document.createElement('button');
+        this.#button.type = 'submit';
+        this.#button.textContent = 'Hozzáadás';
         
-        this.#form.appendChild(submit);
+        this.#form.appendChild(this.#button);
         this.Div.appendChild(this.#form);
     }
 
@@ -44,10 +46,10 @@ class Form extends Container{
     }
 
     /**
-     * @returns {FormField}
+     * @returns {FormField[]}
      */
     get FormFields(){
-        return this.formFields;
+        return this.#formFields;
     }
 
     reset(){
@@ -62,6 +64,7 @@ class Form extends Container{
     addFormFields(formFields){
         for(const formField of formFields){
             this.#formFields.push(formField);
+            this.#form.insertBefore(formField.Div, this.#button);
         }
     }
 
@@ -86,63 +89,24 @@ class Form extends Container{
     }
 }
 
-class FormField extends HTMLDivElement{ // velemenyem szerint az h ilyet nem lehet csinalni az kaka
-    // ha ezt be akarom fejezni akk kell csinalni egy div propertit es abba kell rakni a dolgokat
-    // mennyen a fenebe az aki ezt kitalalta 
-    // meg az a kerdesem h ha vannak classok akk miert egy rohadt oject a div amin van valami specko interface
-    // vagy ha nem igy van akk nem ertem
-    //áááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááááá
+class FormField{
     #label;
     #input;
 
     /**
-     * @type {HTMLParagraphElement}
+     * @type {HTMLDivElement}
      */
-    #error;
-
+    #div;
 
     /**
-     * 
-     * @param {String} labelText 
-     * @param {String} inputId 
-     * @param {String} type 
-     * @param {?{text:String, value:String}[]} options 
-     */
-    constructor(labelText, inputId, type, options){
-        super();
-
-        this.#label = document.createElement('label');
-        this.#label.textContent = labelText;
-        this.#error = document.createElement('p');
-        this.#error.style.color = 'red';
-        
-        if(type === 'select'){
-            this.#input = document.createElement('select');
-
-            for(const option of options){
-                const HTMLOption = document.createElement('option');
-                HTMLOption.textContent = option.text;
-                HTMLOption.value = option.value;
-
-                this.#input.appendChild(HTMLOption);
-            }
-        }
-        else{
-            this.#input = document.createElement('input');
-            this.#input.type = type;
-            this.#label.for = this.#input.id = inputId;
-        }
-
-
-        this.appendChild(this.#label);
-        this.appendChild(this.#input);
-        this.appendChild(this.#error);
-    }
-
-
+     * @type {HTMLParagraphElement}
+    */
+   #error;
+   
+    
     /**
      * @returns {String}
-     */
+    */
     get Value(){
         return this.#input.value;
     }
@@ -153,4 +117,52 @@ class FormField extends HTMLDivElement{ // velemenyem szerint az h ilyet nem leh
     set ErrorText(text){
         this.#error.textContent = text
     }
+
+    /**
+     * @returns {HTMLDivElement}
+     */
+    get Div(){
+        return this.#div;
+    }
+    
+    
+        /**
+         * 
+         * @param {String} labelText 
+         * @param {String} inputId 
+         * @param {String} type 
+         * @param {?{text:String, value:String}[]} options 
+         */
+        constructor(labelText, inputId, type, options){
+            this.#div = document.createElement('div');
+    
+            this.#label = document.createElement('label');
+            this.#label.textContent = labelText;
+            this.#error = document.createElement('p');
+            this.#error.style.color = 'red';
+            
+            if(type === 'select'){
+                this.#input = document.createElement('select');
+    
+                for(const option of options){
+                    const HTMLOption = document.createElement('option');
+                    HTMLOption.textContent = option.text;
+                    HTMLOption.value = option.value;
+    
+                    this.#input.appendChild(HTMLOption);
+                }
+            }
+            else{
+                this.#input = document.createElement('input');
+                this.#input.type = type;
+                this.#label.for = this.#input.id = inputId;
+            }
+    
+            
+            this.#div.appendChild(this.#label);
+            this.#div.appendChild(document.createElement('br'));
+            this.#div.appendChild(this.#input);
+            this.#div.appendChild(document.createElement('br'));
+            this.#div.appendChild(this.#error);
+        }
 }

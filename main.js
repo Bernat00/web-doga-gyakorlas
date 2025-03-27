@@ -25,13 +25,13 @@ form.OnSubmit = (e) => {
          * @type {Person}
          */
         const person = {};
-        person.nev = form.FormFields[0];
-        person.szamjegyekSzama = form.FormFields[1];
-        person.szazad = form.FormFields[2];   
+        person.nev = form.FormFields[0].Value;
+        person.szamjegyekSzama = form.FormFields[1].Value;
+        person.szazad = form.FormFields[2].Value;   
         
         manager.addPerson(person);
 
-        form.reset()
+        form.reset();
     }
 } 
 
