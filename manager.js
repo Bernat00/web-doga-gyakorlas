@@ -29,6 +29,26 @@ class PeopleManager{
         this.#onUpdate = callback;
     }
 
+    runOnUpdate(){
+        return this.#onUpdate(this.#people);
+    }
+
+
+    filter(text, forWhat){
+        /**
+         * @type {Person[]}
+         */
+        let tmp = []
+
+        for(const person of this.#people){
+            if(person[forWhat] === text){
+                tmp.push(person);
+            }
+        }
+
+        this.#onUpdate(tmp);
+    }
+
 
     /**
      * 

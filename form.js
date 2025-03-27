@@ -22,7 +22,7 @@ class Form extends Container{
     #formFields;
 
 
-    constructor(){
+    constructor(submitBTNText){
         super();
 
         this.#formFields = [];
@@ -31,7 +31,7 @@ class Form extends Container{
         
         this.#button = document.createElement('button');
         this.#button.type = 'submit';
-        this.#button.textContent = 'Hozzáadás';
+        this.#button.textContent = submitBTNText;
         
         this.#form.appendChild(this.#button);
         this.Div.appendChild(this.#form);

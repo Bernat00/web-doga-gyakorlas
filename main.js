@@ -1,7 +1,7 @@
 const container = new Container();
 const manager = new PeopleManager();
 const table = new Table(manager);
-const form = new Form();
+const form = new Form('Hozzáadás');
 form.addFormFields(
     [
         new FormField('Név', 'nev', 'text'),
@@ -35,6 +35,29 @@ form.OnSubmit = (e) => {
     }
 } 
 
+
+const form2 = new Form('keresés');
+form2.addFormFields([
+    new FormField('kereses', 'search', 'text'),
+    new FormField('mire', 'mire', 'select',
+        [
+            {text:'', value:''},
+            {text:'név', value:'nev'},
+            {text:'szamjegyekszama', value:'szamjegyekszama'},
+            {text:'szazad', value:'szazad'}
+        ])
+]);
+
+form2.OnSubmit = (e) =>{
+    e.preventDefault();
+
+    if(form2.FormFields[1].Value && form2.FormFields[0].Value){
+        manager.filter(form2.FormFields[0].Value, form2.FormFields[1].Value);
+    }
+    else{
+        manager.runOnUpdate();
+    }
+};
 
 const load = new Load(manager);
 
